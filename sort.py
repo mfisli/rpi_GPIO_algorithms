@@ -1,6 +1,6 @@
-import time
+import time as Time
 import RPi.GPIO as GPIO
-import random
+import random as Random
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 
@@ -18,18 +18,21 @@ class Container:
       self.pins.append(Pin(value,address))
     print("Pins setup")
 
-  def allOn(self, duration):
+  def allOn(self, delay):
     for pin in self.pins:
       pin.on()
-    time.sleep(duration)
+    Time.sleep(delay)
 
-  def allOff(self, duration):
+  def allOff(self, delay):
     for pin in self.pins:
       pin.off()
-    time.sleep(duration)
+    Time.sleep(delay)
 
-  def random():
+  def random(self, onDelay = 0.25, offDelay = 0):
     print("random")
+    pin = Random.choice(self.pins)
+    pin.on(onDelay)
+    pin.off(offDelay)
     
   def cleanUp(self):
     GPIO.cleanup()
@@ -43,7 +46,7 @@ class Container:
 
 class Pin:
   value = '';
-  state = 'off';
+  state = 'off';  #TODO change state to bool
   address = '';
 
   def __init__(self, value, address):
@@ -55,19 +58,22 @@ class Pin:
   def set(self, value):
     self.value
 
-  def on(self):
+  def on(self, delay = 0.25):
     self.state = 'on';
     GPIO.output(self.address, True)
+    Time.sleep(delay)
 
-  def off(self):
+  def off(self, delay = 0):
     self.state = 'off';
     GPIO.output(self.address, False)
+    Time.sleep(delay)
 
 #_______________________________
 # Main
 print("--Start")
 c = Container()
-c.allOn(2)
-c.allOff(1)
+c.allOn(0.25)
+c.allOff(0)
+c.random()
 c.cleanUp()
 print("--End")
