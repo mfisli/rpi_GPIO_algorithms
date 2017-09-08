@@ -30,9 +30,11 @@ class Container:
 
   def randomBlink(self, delay = 0.25, count = 1):
     localPins = self.pins
-    index = Random.choice(range(len(localPins)))
-    localPins[index].blink(0.12)
-    localPins.pop(index)    
+    while(count):
+      index = Random.choice(range(len(localPins)))
+      localPins[index].blink(0.12)
+      localPins.pop(index)
+      count -= 1    
 
   def random(self, onDelay = 0.25, offDelay = 0):
     print("random")
