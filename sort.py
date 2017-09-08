@@ -28,19 +28,30 @@ class Container:
       pin.off()
     Time.sleep(delay)
 
-  def randomBlink(self, delay = 0.25, count = 1):
-    localPins = self.pins
+  def randomBlinkAll(self, delayBetween = 0.25, delayBlink = 0.25, count = 1):
     while(count):
-      index = Random.choice(range(len(localPins)))
-      localPins[index].blink(0.12)
-      localPins.pop(index)
-      count -= 1    
+      print(count)
+      pin = Random.choice(self.pins)
+      pin.blink(delayBlink)
+      count -= 1
+      Time.sleep(delayBetween)    
 
-  def random(self, onDelay = 0.25, offDelay = 0):
+  def randomBlink(self, onDelay = 0.25, offDelay = 0):
     print("random")
-    pin = Random.choice(self.pins)
+    pin = getRandomPin()
     pin.on(onDelay)
     pin.off(offDelay)
+
+
+  def wave(self, delayBetween = 0.06):
+    pins = self.pins
+    offset = Random.choice(range(len(pins)))
+    print("Target Pin: " + str(offset))
+    for index,value in enumerate(pins):
+      index = index + offset;
+      if 0 <= index and index < len(pins):
+	pins[index].on(delayBetween)
+        Time.sleep(delayBetween)
     
   def cleanUp(self):
     GPIO.cleanup()
@@ -84,8 +95,9 @@ class Pin:
 # Main
 print("--Start")
 c = Container()
-c.allOn(0.06)
+c.allOn(0.006)
 c.allOff(0)
-c.randomBlink()
+#c.randomBlink(0.06, 0.06, 40)
+c.wave()
 c.cleanUp()
 print("--End")
