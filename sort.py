@@ -20,13 +20,19 @@ class Container:
 
   def allOn(self, delay):
     for pin in self.pins:
-      pin.on()
+      pin.on(delay)
     Time.sleep(delay)
 
   def allOff(self, delay):
     for pin in self.pins:
       pin.off()
     Time.sleep(delay)
+
+  def randomBlink(self, delay = 0.25, count = 1):
+    localPins = self.pins
+    index = Random.choice(range(len(localPins)))
+    localPins[index].blink(0.12)
+    localPins.pop(index)    
 
   def random(self, onDelay = 0.25, offDelay = 0):
     print("random")
@@ -67,13 +73,17 @@ class Pin:
     self.state = 'off';
     GPIO.output(self.address, False)
     Time.sleep(delay)
+  
+  def blink(self, delay):
+    self.on(delay)
+    self.off()
 
 #_______________________________
 # Main
 print("--Start")
 c = Container()
-c.allOn(0.25)
+c.allOn(0.06)
 c.allOff(0)
-c.random()
+c.randomBlink()
 c.cleanUp()
 print("--End")
