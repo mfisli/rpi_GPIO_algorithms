@@ -42,6 +42,11 @@ class Container:
     pin.on(onDelay)
     pin.off(offDelay)
 
+  def waveLoop(self, count= 1):
+    while (count):
+      self.wave()
+      count -= 1;
+      self.allOff(0)
 
   def wave(self, delayBetween = 0.06):
     pins = self.pins
@@ -98,6 +103,6 @@ c = Container()
 c.allOn(0.006)
 c.allOff(0)
 #c.randomBlink(0.06, 0.06, 40)
-c.wave()
+c.waveLoop(20)
 c.cleanUp()
 print("--End")
